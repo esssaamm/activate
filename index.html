@@ -27,17 +27,17 @@
 
 <script>
     function getHWID() {
-        // تجميع ثوابت الهاردوير الموحدة لجميع المتصفحات
+        // الـ Stack الموحد: شلنا الحاجات اللي فايرفوكس بيزيفها أو مش بيشوفها
         const stack = [
-            navigator.platform,            // نظام التشغيل والمعمارية
-            navigator.hardwareConcurrency, // عدد أنوية المعالج
-            navigator.deviceMemory || 0,   // حجم الرامات (بالجيكا)
-            screen.width + "x" + screen.height, // دقة الشاشة الفيزيائية
-            screen.colorDepth,             // عمق الألوان
-            Intl.DateTimeFormat().resolvedOptions().timeZone // المنطقة الزمنية
+            navigator.platform,                      // نظام التشغيل (Win32)
+            navigator.language,                      // لغة المتصفح (ar-EG / en-US)
+            screen.colorDepth,                       // عمق الألوان (24 أو 32)
+            Intl.DateTimeFormat().resolvedOptions().timeZone // المنطقة الزمنية (Africa/Cairo)
         ].join('###');
 
-        // محرك الـ Hashing الرياضي الموحد
+        // سطر للتنقيح: افتح الـ Console (F12) وشوف النص ده، لازم يكون هو هو في المتصفحين
+        console.log("Unified Stack:", stack);
+
         let hash = 0;
         for (let i = 0; i < stack.length; i++) {
             hash = ((hash << 5) - hash) + stack.charCodeAt(i);
@@ -46,13 +46,11 @@
         return Math.abs(hash).toString(16).toUpperCase();
     }
 
-    const finalID = getHWID();
-    document.getElementById('hwid_display').innerText = finalID;
-
-    function copyID() {
-        navigator.clipboard.writeText(finalID);
-        alert("تم نسخ الكود الموحد: " + finalID);
-    }
+    window.onload = function() {
+        const id = getHWID();
+        document.getElementById('hwid_display').innerText = id;
+        window.currentID = id;
+    };
 </script>
 </body>
 </html>
