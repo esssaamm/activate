@@ -33,23 +33,17 @@
 
 <script>
     function generateHWID() {
-        // 1. استجواب كارت الشاشة (WebGL Renderer)
         const canvas = document.createElement('canvas');
         const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
         const debugInfo = gl ? gl.getExtension('WEBGL_debug_renderer_info') : null;
         const renderer = debugInfo ? gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) : "UnknownGPU";
 
-        // 2. تجميع مواصفات الهاردوير الفريدة
         const stack = [
-            renderer, // موديل كارت الشاشة الدقيق
-            navigator.hardwareConcurrency, // عدد أنوية المعالج
-            screen.width + "x" + screen.height, // دقة الشاشة
-            navigator.deviceMemory || "N/A", // الرامات
-            new Date().getTimezoneOffset(), // المنطقة الزمنية
-            navigator.platform // نظام التشغيل
+            renderer, 
+            navigator.hardwareConcurrency, 
+            screen.width + "x" + screen.height
         ].join('###');
 
-        // 3. تحويل الداتا لـ Hash قصير (بصمة رقمية)
         let hash = 0;
         for (let i = 0; i < stack.length; i++) {
             hash = ((hash << 5) - hash) + stack.charCodeAt(i);
@@ -58,13 +52,12 @@
         return Math.abs(hash).toString(16).toUpperCase();
     }
 
-    // عرض الكود في الصفحة
     const hwid = generateHWID();
     document.getElementById('hwid').innerText = hwid;
 
     function copyID() {
         navigator.clipboard.writeText(hwid);
-        alert("تم نسخ الكود بنجاح: " + hwid);
+        alert("تم نسخ الكود الموحد: " + hwid);
     }
 </script>
 
