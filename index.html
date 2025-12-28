@@ -25,17 +25,23 @@
     <button onclick="copyID()">نسخ كود الجهاز</button>
 </div>
 
+<div class="hwid-box" id="hwid_display" style="cursor: pointer; padding: 20px; background: #f0f0f0; border: 2px dashed #007bff; font-weight: bold; font-size: 1.5rem; text-align: center; margin-bottom: 10px;">
+    جاري الحساب...
+</div>
+
+<button onclick="copyToClipboard()" style="width: 100%; padding: 15px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 1.1rem; font-weight: bold;">
+    نسخ كود التفعيل
+</button>
+
 <script>
     function getHWID() {
-        // الـ Stack الموحد: شلنا الحاجات اللي فايرفوكس بيزيفها أو مش بيشوفها
         const stack = [
-            navigator.platform,                      // نظام التشغيل (Win32)
-            navigator.language,                      // لغة المتصفح (ar-EG / en-US)
-            screen.colorDepth,                       // عمق الألوان (24 أو 32)
-            Intl.DateTimeFormat().resolvedOptions().timeZone // المنطقة الزمنية (Africa/Cairo)
+            navigator.platform,
+            navigator.language,
+            screen.colorDepth,
+            Intl.DateTimeFormat().resolvedOptions().timeZone
         ].join('###');
 
-        // سطر للتنقيح: افتح الـ Console (F12) وشوف النص ده، لازم يكون هو هو في المتصفحين
         console.log("Unified Stack:", stack);
 
         let hash = 0;
@@ -46,11 +52,25 @@
         return Math.abs(hash).toString(16).toUpperCase();
     }
 
+    // متغير عالمي لحفظ الكود عشان النسخ
+    let finalCode = "";
+
     window.onload = function() {
-        const id = getHWID();
-        document.getElementById('hwid_display').innerText = id;
-        window.currentID = id;
+        finalCode = getHWID();
+        document.getElementById('hwid_display').innerText = finalCode;
     };
+
+    // دالة النسخ والرسالة اللي طلبتها
+    function copyToClipboard() {
+        if (finalCode === "") return;
+
+        navigator.clipboard.writeText(finalCode).then(() => {
+            // الرسالة بالصيغة اللي طلبتها بالظبط يا هندسة
+            alert("انت اخدت الكود " + finalCode + " copy");
+        }).catch(err => {
+            console.error('فشل النسخ: ', err);
+        });
+    }
 </script>
 </body>
 </html>
