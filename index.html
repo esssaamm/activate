@@ -3,71 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>بوابة تفعيل السكريبتات | هندسة بنها</title>
+    <title>بوابة التفعيل الموحدة | هندسة بنها</title>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background-color: #f8f9fa; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .card { background: white; padding: 40px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); text-align: center; max-width: 450px; width: 90%; border-top: 5px solid #1a73e8; }
-        h2 { color: #202124; margin-bottom: 10px; }
-        p { color: #5f6368; font-size: 15px; margin-bottom: 25px; }
-        .hwid-display { background: #f1f3f4; border: 2px dashed #1a73e8; padding: 20px; font-family: 'Consolas', monospace; font-size: 1.5rem; color: #d93025; font-weight: bold; border-radius: 10px; margin-bottom: 20px; cursor: pointer; word-break: break-all; }
-        button { background-color: #1a73e8; color: white; border: none; padding: 15px 30px; border-radius: 8px; cursor: pointer; font-size: 18px; font-weight: bold; width: 100%; transition: 0.3s; }
-        button:hover { background-color: #1557b0; transform: translateY(-2px); }
-        .footer-note { margin-top: 20px; font-size: 12px; color: #9aa0a6; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .card { background: white; padding: 35px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; max-width: 400px; width: 90%; border-top: 6px solid #1a73e8; }
+        h2 { color: #1a73e8; margin-bottom: 10px; }
+        p { color: #5f6368; font-size: 14px; margin-bottom: 25px; }
+        .hwid-box { background: #e8f0fe; border: 2px dashed #1a73e8; padding: 20px; font-family: 'Consolas', monospace; font-size: 1.4rem; color: #d93025; font-weight: bold; border-radius: 8px; margin-bottom: 20px; cursor: pointer; }
+        button { background-color: #1a73e8; color: white; border: none; padding: 12px 25px; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: bold; width: 100%; transition: 0.3s; }
+        button:hover { background-color: #1557b0; }
     </style>
 </head>
 <body>
 
 <div class="card">
-    <h2>تفعيل جهاز جديد</h2>
-    <p>يا بشمهندس، انسخ الكود اللي تحت ده وابعتـه للآدمن عشان يفعل لك السكريبت على جهازك ده.</p>
+    <h2>تفعيل الجهاز</h2>
+    <p>يا هندسة، انسخ الكود التالي وابعتـه للآدمن لتفعيل الـ 13 سكريبت على هذا الجهاز.</p>
     
-    <div class="hwid-display" id="displayID" onclick="copyToClipboard()">جاري الحساب...</div>
+    <div class="hwid-box" id="hwid_display" onclick="copyID()">جاري الحساب...</div>
     
-    <button onclick="copyToClipboard()">نسخ كود التفعيل</button>
-    
-    <div class="footer-note">
-        ⚠️ لازم تفتح اللينك ده من نفس المتصفح اللي هتشغل عليه السكريبت.
-    </div>
+    <button onclick="copyID()">نسخ كود الجهاز</button>
 </div>
 
 <script>
-    // المعادلة اللي أنت بعتها بالظبط يا هندسة لضمان التطابق
     function getHWID() {
-        const canvas = document.createElement('canvas');
-        const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
-        const debugInfo = gl ? gl.getExtension('WEBGL_debug_renderer_info') : null;
-        
-        // جلب اسم كارت الشاشة
-        const renderer = debugInfo ? gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) : "N/A";
-
-        // تجميع المكونات (GPU + CPU Cores + Resolution)
+        // تجميع ثوابت الهاردوير الموحدة لجميع المتصفحات
         const stack = [
-            renderer, 
-            navigator.hardwareConcurrency, 
-            screen.width + "x" + screen.height
+            navigator.platform,            // نظام التشغيل والمعمارية
+            navigator.hardwareConcurrency, // عدد أنوية المعالج
+            navigator.deviceMemory || 0,   // حجم الرامات (بالجيكا)
+            screen.width + "x" + screen.height, // دقة الشاشة الفيزيائية
+            screen.colorDepth,             // عمق الألوان
+            Intl.DateTimeFormat().resolvedOptions().timeZone // المنطقة الزمنية
         ].join('###');
 
-        // خوارزمية الـ Hashing اللي طلبتها
+        // محرك الـ Hashing الرياضي الموحد
         let hash = 0;
         for (let i = 0; i < stack.length; i++) {
             hash = ((hash << 5) - hash) + stack.charCodeAt(i);
             hash |= 0;
         }
-        
-        // المخرج النهائي: Hexadecimal & UpperCase
         return Math.abs(hash).toString(16).toUpperCase();
     }
 
-    // تنفيذ الحسبة وعرضها أول ما الصفحة تفتح
-    const generatedID = getHWID();
-    document.getElementById('displayID').innerText = generatedID;
+    const finalID = getHWID();
+    document.getElementById('hwid_display').innerText = finalID;
 
-    function copyToClipboard() {
-        navigator.clipboard.writeText(generatedID).then(() => {
-            alert("تم نسخ الكود: " + generatedID + "\nابعتـه دلوقتي للآدمن.");
-        });
+    function copyID() {
+        navigator.clipboard.writeText(finalID);
+        alert("تم نسخ الكود الموحد: " + finalID);
     }
 </script>
-
 </body>
 </html>
