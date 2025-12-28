@@ -31,30 +31,58 @@
     </div>
 </div>
 
-<script>
-    // الدالة الموحدة التي طلبتها يا هندسة لضمان التطابق 100%
-    function getHWID() {
-        const canvas = document.createElement('canvas');
-        const gl = canvas.getContext('webgl');
-        const debugInfo = gl ? gl.getExtension('WEBGL_debug_renderer_info') : null;
-        const renderer = debugInfo ? gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) : "N/A";
+<div class="id-box" id="hwid_display">جاري الحساب...</div>
+<button onclick="copyID()">نسخ الكود</button>
 
-        const stack = [renderer, navigator.hardwareConcurrency, screen.width + "x" + screen.height].join('###');
-        let hash = 0;
-        for (let i = 0; i < stack.length; i++) {
-            hash = ((hash << 5) - hash) + stack.charCodeAt(i);
-            hash |= 0;
+<script>
+    function getHWID() {
+        try {
+            const canvas = document.createElement('canvas');
+            const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+            let renderer = "N/A";
+
+            if (gl) {
+                const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+                renderer = debugInfo ? gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) : "Basic_GPU";
+            }
+
+            // الخلطة السرية: كارت الشاشة + عدد المعالجات + دقة الشاشة
+            const stack = [
+                renderer,
+                navigator.hardwareConcurrency || 0,
+                screen.width + "x" + screen.height
+            ].join('###');
+
+            // طباعة المدخلات في الكونسول عشان تتأكد إنها مقروءة صح
+            console.log("HWID Components:", stack);
+
+            let hash = 0;
+            for (let i = 0; i < stack.length; i++) {
+                hash = ((hash << 5) - hash) + stack.charCodeAt(i);
+                hash |= 0;
+            }
+            return Math.abs(hash).toString(16).toUpperCase();
+        } catch (e) {
+            console.error("HWID Generation Failed:", e);
+            return "ERROR_ID";
         }
-        return Math.abs(hash).toString(16).toUpperCase();
     }
 
-    // عرض الكود عند فتح الصفحة
-    const finalID = getHWID();
-    document.getElementById('hwid_display').innerText = finalID;
+    // الانتظار حتى تحميل الصفحة بالكامل لضمان وجود العنصر
+    window.onload = function() {
+        const finalID = getHWID();
+        const display = document.getElementById('hwid_display');
+        if (display) {
+            display.innerText = finalID;
+            window.currentHWID = finalID; // حفظه للنسخ
+        }
+    };
 
     function copyID() {
-        navigator.clipboard.writeText(finalID);
-        alert("تم نسخ كود الجهاز الموحد: " + finalID);
+        if (window.currentHWID) {
+            navigator.clipboard.writeText(window.currentHWID);
+            alert("تم نسخ الكود الموحد: " + window.currentHWID);
+        }
     }
 </script>
 
