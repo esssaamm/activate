@@ -3,86 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>code</title>
+    <title>بوابة تفعيل السكريبتات | هندسة بنها</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .container { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; max-width: 400px; width: 90%; }
-        h2 { color: #1a73e8; margin-bottom: 10px; }
-        p { color: #5f6368; font-size: 14px; line-height: 1.6; }
-        .id-box { background: #f8f9fa; border: 2px dashed #dadce0; padding: 15px; margin: 20px 0; font-family: monospace; font-size: 1.2rem; color: #d93025; font-weight: bold; word-break: break-all; cursor: pointer; transition: 0.3s; }
-        .id-box:hover { background: #e8f0fe; border-color: #1a73e8; }
-        button { background-color: #1a73e8; color: white; border: none; padding: 12px 25px; border-radius: 5px; cursor: pointer; font-size: 16px; font-weight: bold; width: 100%; transition: 0.3s; }
-        button:hover { background-color: #1557b0; }
-        .footer { margin-top: 20px; font-size: 11px; color: #9aa0a6; }
+        body { font-family: 'Segoe UI', sans-serif; background-color: #f8f9fa; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .card { background: white; padding: 40px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); text-align: center; max-width: 450px; width: 90%; border-top: 5px solid #1a73e8; }
+        h2 { color: #202124; margin-bottom: 10px; }
+        p { color: #5f6368; font-size: 15px; margin-bottom: 25px; }
+        .hwid-display { background: #f1f3f4; border: 2px dashed #1a73e8; padding: 20px; font-family: 'Consolas', monospace; font-size: 1.5rem; color: #d93025; font-weight: bold; border-radius: 10px; margin-bottom: 20px; cursor: pointer; word-break: break-all; }
+        button { background-color: #1a73e8; color: white; border: none; padding: 15px 30px; border-radius: 8px; cursor: pointer; font-size: 18px; font-weight: bold; width: 100%; transition: 0.3s; }
+        button:hover { background-color: #1557b0; transform: translateY(-2px); }
+        .footer-note { margin-top: 20px; font-size: 12px; color: #9aa0a6; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h2>تفعيل الجهاز</h2>
-    <p>من فضلك قم بنسخ الكود الموضح أدناه .</p>
+<div class="card">
+    <h2>تفعيل جهاز جديد</h2>
+    <p>يا بشمهندس، انسخ الكود اللي تحت ده وابعتـه للآدمن عشان يفعل لك السكريبت على جهازك ده.</p>
     
-    <div class="id-box" id="hwid" onclick="copyID()">جاري استخراج البصمة...</div>
+    <div class="hwid-display" id="displayID" onclick="copyToClipboard()">جاري الحساب...</div>
     
-    <button onclick="copyID()">نسخ كود الجهاز</button>
+    <button onclick="copyToClipboard()">نسخ كود التفعيل</button>
     
-    <div class="footer">
-        نظام حماية الهاردوير © 2025 - جميع الحقوق محفوظة
+    <div class="footer-note">
+        ⚠️ لازم تفتح اللينك ده من نفس المتصفح اللي هتشغل عليه السكريبت.
     </div>
 </div>
 
-<div class="id-box" id="hwid_display">جاري الحساب...</div>
-<button onclick="copyID()">نسخ الكود</button>
-
 <script>
+    // المعادلة اللي أنت بعتها بالظبط يا هندسة لضمان التطابق
     function getHWID() {
-        try {
-            const canvas = document.createElement('canvas');
-            const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
-            let renderer = "N/A";
+        const canvas = document.createElement('canvas');
+        const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+        const debugInfo = gl ? gl.getExtension('WEBGL_debug_renderer_info') : null;
+        
+        // جلب اسم كارت الشاشة
+        const renderer = debugInfo ? gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) : "N/A";
 
-            if (gl) {
-                const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
-                renderer = debugInfo ? gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) : "Basic_GPU";
-            }
+        // تجميع المكونات (GPU + CPU Cores + Resolution)
+        const stack = [
+            renderer, 
+            navigator.hardwareConcurrency, 
+            screen.width + "x" + screen.height
+        ].join('###');
 
-            // الخلطة السرية: كارت الشاشة + عدد المعالجات + دقة الشاشة
-            const stack = [
-                renderer,
-                navigator.hardwareConcurrency || 0,
-                screen.width + "x" + screen.height
-            ].join('###');
-
-            // طباعة المدخلات في الكونسول عشان تتأكد إنها مقروءة صح
-            console.log("HWID Components:", stack);
-
-            let hash = 0;
-            for (let i = 0; i < stack.length; i++) {
-                hash = ((hash << 5) - hash) + stack.charCodeAt(i);
-                hash |= 0;
-            }
-            return Math.abs(hash).toString(16).toUpperCase();
-        } catch (e) {
-            console.error("HWID Generation Failed:", e);
-            return "ERROR_ID";
+        // خوارزمية الـ Hashing اللي طلبتها
+        let hash = 0;
+        for (let i = 0; i < stack.length; i++) {
+            hash = ((hash << 5) - hash) + stack.charCodeAt(i);
+            hash |= 0;
         }
+        
+        // المخرج النهائي: Hexadecimal & UpperCase
+        return Math.abs(hash).toString(16).toUpperCase();
     }
 
-    // الانتظار حتى تحميل الصفحة بالكامل لضمان وجود العنصر
-    window.onload = function() {
-        const finalID = getHWID();
-        const display = document.getElementById('hwid_display');
-        if (display) {
-            display.innerText = finalID;
-            window.currentHWID = finalID; // حفظه للنسخ
-        }
-    };
+    // تنفيذ الحسبة وعرضها أول ما الصفحة تفتح
+    const generatedID = getHWID();
+    document.getElementById('displayID').innerText = generatedID;
 
-    function copyID() {
-        if (window.currentHWID) {
-            navigator.clipboard.writeText(window.currentHWID);
-            alert("تم نسخ الكود الموحد: " + window.currentHWID);
-        }
+    function copyToClipboard() {
+        navigator.clipboard.writeText(generatedID).then(() => {
+            alert("تم نسخ الكود: " + generatedID + "\nابعتـه دلوقتي للآدمن.");
+        });
     }
 </script>
 
