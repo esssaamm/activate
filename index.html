@@ -32,18 +32,14 @@
 </div>
 
 <script>
-    function generateHWID() {
+    // الدالة الموحدة التي طلبتها يا هندسة لضمان التطابق 100%
+    function getHWID() {
         const canvas = document.createElement('canvas');
-        const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+        const gl = canvas.getContext('webgl');
         const debugInfo = gl ? gl.getExtension('WEBGL_debug_renderer_info') : null;
-        const renderer = debugInfo ? gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) : "UnknownGPU";
+        const renderer = debugInfo ? gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) : "N/A";
 
-        const stack = [
-            renderer, 
-            navigator.hardwareConcurrency, 
-            screen.width + "x" + screen.height
-        ].join('###');
-
+        const stack = [renderer, navigator.hardwareConcurrency, screen.width + "x" + screen.height].join('###');
         let hash = 0;
         for (let i = 0; i < stack.length; i++) {
             hash = ((hash << 5) - hash) + stack.charCodeAt(i);
@@ -52,12 +48,13 @@
         return Math.abs(hash).toString(16).toUpperCase();
     }
 
-    const hwid = generateHWID();
-    document.getElementById('hwid').innerText = hwid;
+    // عرض الكود عند فتح الصفحة
+    const finalID = getHWID();
+    document.getElementById('hwid_display').innerText = finalID;
 
     function copyID() {
-        navigator.clipboard.writeText(hwid);
-        alert("تم نسخ الكود الموحد: " + hwid);
+        navigator.clipboard.writeText(finalID);
+        alert("تم نسخ كود الجهاز الموحد: " + finalID);
     }
 </script>
 
