@@ -2,47 +2,69 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>Code</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CODE</title>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background: #f8f9fa; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .card { background: white; padding: 40px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center; max-width: 400px; border-top: 5px solid #28a745; }
-        .hwid-box { background: #e9ecef; border: 2px dashed #28a745; padding: 20px; font-family: monospace; font-size: 1.5rem; color: #d93025; font-weight: bold; border-radius: 10px; margin: 20px 0; cursor: pointer; }
-        button { background: #28a745; color: white; border: none; padding: 15px; border-radius: 8px; cursor: pointer; font-size: 1.1rem; width: 100%; font-weight: bold; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: #f4f7f9; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .card { background: white; padding: 35px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center; max-width: 450px; width: 90%; border-top: 6px solid #e91e63; }
+        h2 { color: #e91e63; margin-bottom: 10px; }
+        p { color: #5f6368; font-size: 15px; margin-bottom: 25px; line-height: 1.6; }
+        .hwid-box { background: #fce4ec; border: 2px dashed #e91e63; padding: 20px; font-family: monospace; font-size: 1.3rem; color: #880e4f; font-weight: bold; border-radius: 12px; margin-bottom: 25px; cursor: pointer; word-break: break-all; }
+        button { background-color: #e91e63; color: white; border: none; padding: 15px 30px; border-radius: 8px; cursor: pointer; font-size: 18px; font-weight: bold; width: 100%; transition: 0.3s; }
+        button:hover { background-color: #c2185b; transform: translateY(-2px); }
+        .info-text { margin-top: 15px; font-size: 12px; color: #f44336; font-weight: bold; }
     </style>
 </head>
 <body>
-    <div class="card">
-        <h3>كود تفعيل الجهاز</h3>
-        <p>جرب علي نفس المتصفح الي هتستخدمه</p>
-        <div class="hwid-box" id="displayID" onclick="copyCode()">جاري الحساب...</div>
-        <button onclick="copyCode()">نسخ الكود</button>
-    </div>
 
-    <script>
-        function getHWID() {
-            const canvas = document.createElement('canvas');
-            const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
-            const debugInfo = gl ? gl.getExtension('WEBGL_debug_renderer_info') : null;
-            const renderer = debugInfo ? gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) : "N/A";
+<div class="card">
+    <h2>essaam0_0</h2>
+    <p>ده الكود بتاعكه</p>
+    
+    <div class="hwid-box" id="hwid_display" onclick="copyCode()">جاري الحساب...</div>
+    
+    <button onclick="copyCode()">نسخ كود الجهاز</button>
+    <p class="info-text">ملاحظة: افتح الرابط من المتصفح الذي ستستخدم فيه السكريبتات.</p>
+</div>
 
-            const stack = [renderer, navigator.hardwareConcurrency].join('###');
+<script>
+    function getHWID() {
+        const canvas = document.createElement('canvas');
+        const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+        
+        // جلب جملة كارت الشاشة كاملة بدون أي تعديل
+        const debugInfo = gl ? gl.getExtension('WEBGL_debug_renderer_info') : null;
+        const renderer = debugInfo ? gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) : "N/A";
 
-            let hash = 0;
-            for (let i = 0; i < stack.length; i++) {
-                hash = ((hash << 5) - hash) + stack.charCodeAt(i);
-                hash |= 0;
-            }
-            return Math.abs(hash).toString(16).toUpperCase();
+        // جلب قدرة معالجة الأنسجة (ثابت هاردوير)
+        const maxTextureSize = gl ? gl.getParameter(gl.MAX_TEXTURE_SIZE) : 0;
+
+        // تجميع الـ Stack الخماسي (الجملة الكاملة + الأنوية + اللمس + الألوان + الأنسجة)
+        const stack = [
+            renderer,                        // جملة كارت الشاشة الكاملة
+            navigator.hardwareConcurrency,   // عدد الأنوية
+            navigator.maxTouchPoints || 0,    // دعم اللمس
+            screen.colorDepth,               // عمق الألوان
+            maxTextureSize                   // قدرة الأنسجة
+        ].join('###');
+
+        // المحرك الرياضي (Hashing)
+        let hash = 0;
+        for (let i = 0; i < stack.length; i++) {
+            hash = ((hash << 5) - hash) + stack.charCodeAt(i);
+            hash |= 0;
         }
+        return Math.abs(hash).toString(16).toUpperCase();
+    }
 
-        const id = getHWID();
-        document.getElementById('displayID').innerText = id;
+    const finalID = getHWID();
+    document.getElementById('hwid_display').innerText = finalID;
 
-        function copyCode() {
-            navigator.clipboard.writeText(id).then(() => {
-                alert("انت نسخت الكود " + id );
-            });
-        }
-    </script>
+    function copyCode() {
+        navigator.clipboard.writeText(finalID).then(() => {
+            alert("انت اخدت الكود " + finalID + " copy");
+        });
+    }
+</script>
 </body>
 </html>
