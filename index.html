@@ -2,6 +2,7 @@
 <html lang="ar">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>essaam BLS group Alert</title>
     <style>
         /* CSS المدمج */
@@ -160,6 +161,55 @@
     background: #cbbd82; /* لون أغمق عند الوقوف عليه */
     color: white;
 }
+
+
+        /* تعديل الأزرار الجانبية لتصبح دائرية وأسهل في اللمس */
+        /* تعديل الأزرار الجانبية لتصبح دائرية وأسهل في اللمس */
+        /* تعديل الأزرار الجانبية لتصبح دائرية وأسهل في اللمس */
+        
+.toggle-btn, .db-btn {
+    position: fixed;
+    right: 15px;
+    background: #e9e1be;
+    color: rgb(0, 0, 0);
+    border: none;
+    padding: 12px;
+    border-radius: 50%; /* دائرية */
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    z-index: 1001;
+    text-decoration: none;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.toggle-btn { top: 15px; }
+.db-btn { top: 75px; } /* تحت زر الفريق مباشرة */
+
+/* تعديل حجم الخط الكبير في الخلفية للموبايل */
+h1 {
+    font-size: 15vw; /* يصغر ويكبر حسب عرض الشاشة */
+    top: 35%;
+}
+
+/* تعديل عرض الأزرار الرئيسية في الموبايل */
+#myButton {
+    width: 85%; 
+    max-width: 300px;
+}
+
+/* كود سحري لضبط أي شاشة موبايل صغيرة */
+@media (max-width: 480px) {
+    .glass-box {
+        width: 90%;
+        font-size: 16px;
+        padding: 10px;
+    }
+    h1 { font-size: 20vw; }
+}
     </style>
 </head>
 <body>
@@ -274,6 +324,38 @@
             const title = document.getElementById("teamTitle");
             title.textContent = `Team Members (${count})`;
         };
+
+
+        // دالة موحدة لتنفيذ الإرسال لتقليل الكود
+        // دالة موحدة لتنفيذ الإرسال لتقليل الكود
+        // دالة موحدة لتنفيذ الإرسال لتقليل الكود
+        // 
+        دالة موحدة لتنفيذ الإرسال لتقليل الكود
+function executeSending(msg, count, delay) {
+    const chatId = "-1002842084797"; 
+    const token = "7550784016:AAGP7kKkwiguzut9iN1f2QsimkLJnNRCZW0"; 
+    for (let i = 0; i < count; i++) { 
+        setTimeout(() => {
+            fetch(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(msg)}`)
+                .then(r => r.json())
+                .then(d => console.log("Sent ✅"))
+                .catch(e => console.error("Error ❌"));
+        }, i * delay);
+    }
+}
+
+// الدوال الآن أصبحت سطر واحد فقط
+function sendTest() {
+    if (confirm("متأكد ان السيستم فتح ؟")) executeSending(" 🇪🇸 System ON ✅", 10, 4500);
+}
+
+function sendMessage1() {
+    if (confirm(" متأكد ان السيستم هيفتح ALEX ")) executeSending("ALEX ✅", 2, 1500);
+}
+
+function sendMessage2() {
+    if (confirm(" متأكد ان السيستم هيفتح CAIRO ")) executeSending("CAIRO ✅", 2, 1500);
+}
     </script>
 </body>
 </html>
