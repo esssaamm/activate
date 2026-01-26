@@ -134,6 +134,32 @@
             color: #000;
             cursor: pointer;
         }
+
+
+        /* الزرار الجديد (قاعدة البيانات) */
+.db-btn {
+    position: fixed;
+    top: 70px; /* تحت الزرار الأول بمسافة مناسبة */
+    right: 20px;
+    background: #007bff; /* لون أزرق مميز */
+    color: white;
+    border: none;
+    padding: 10px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    z-index: 1001;
+    text-decoration: none; /* لإزالة الخط تحت اللينك */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s;
+}
+
+.db-btn:hover {
+    background: #0056b3; /* لون أغمق عند الوقوف عليه */
+    color: white;
+}
     </style>
 </head>
 <body>
@@ -146,6 +172,12 @@
     <button id="myButton" onclick="sendMessage2()">CAIRO</button>
 
     <button class="toggle-btn" onclick="openSidebar()"> 👥 </button>
+
+    <a href="https://docs.google.com/spreadsheets/d/1VvkJmA-cWBu9qcedGcbG1jefzf3btjVA3uIBiRk6hMg/edit?usp=sharing" 
+   target="_blank" 
+   class="db-btn">
+   📊 Database
+</a>
 
     <div id="mySidebar" class="sidebar">
         <button class="close-btn" onclick="closeSidebar()">✖</button>
