@@ -305,10 +305,22 @@
         // التحكم في الشريط الجانبي
         function openSidebar() {
             document.getElementById("mySidebar").style.width = "250px";
+
+            // إخفاء زر قاعدة البيانات
+            const dbBtn = document.getElementById("dbButton");
+    if (dbBtn) {
+        dbBtn.style.display = "none";
+    }
         }
 
         function closeSidebar() {
             document.getElementById("mySidebar").style.width = "0";
+
+            // إظهار زر قاعدة البيانات مرة أخرى
+    const dbBtn = document.getElementById("dbButton");
+    if (dbBtn) {
+        dbBtn.style.display = "flex"; 
+    }
         }
 
         // عد أعضاء الفريق تلقائياً عند التشغيل
