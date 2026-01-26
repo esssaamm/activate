@@ -182,13 +182,26 @@
 
     /* 3. تظبيط مكان الصندوق الزجاجي عشان ميتداخلش مع الزراير */
     .glass-box {
-        top: 20px !important;
-        width: 75% !important;
-        left: 5% !important;
-        right: 5% !important;
-        transform: none !important;
-        font-size: 16px !important;
-    }
+    position: absolute;
+    top: 30px;
+    left: 50%; /* عشان يبدأ من نص الشاشة */
+    transform: translateX(-50%); /* عشان يترنتر بالضبط في النص */
+    padding: 10px 20px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    color: #000000;
+    font-weight: bold;
+    z-index: 2;
+    
+    /* التعديلات الجديدة لضبط السطر الواحد والموبايل */
+    white-space: nowrap; /* يمنع النص إنه ينزل سطر جديد */
+    font-size: clamp(12px, 3.5vw, 22px); /* حجم خط مرن يصغر مع حجم الشاشة عشان يفضل سطر واحد */
+    width: auto; /* يخلي الصندوق على قد الكلام بالضبط */
+    max-width: 95vw; /* يضمن إنه ميخرجش بره عرض شاشة الموبايل */
+}
 }
     </style>
 </head>
