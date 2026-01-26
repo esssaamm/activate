@@ -165,19 +165,28 @@
 
 /* الأكواد دي بتشتغل بس لما تفتح من موبايل */
 @media (max-width: 600px) {
+    /* 1. تنزيل الزراير اللي فوق عاليمين تحت شوية */
+    .toggle-btn {
+        top: 130px !important; /* نزلنا زرار الفريق */
+    }
+    .db-btn {
+        top: 185px !important; /* نزلنا زرار قاعدة البيانات */
+    }
+
+    /* 2. رفع الكلمة اللي في نص الشاشة (h1) لفوق عشان تظهر */
     h1 {
-        font-size: 80px !important; /* تصغير الكلمة اللي في الخلفية عشان متبوظش الأبعاد */
-        top: 40% !important;
+        top: 25% !important; /* رفعناها لفوق بعيد عن الزراير الصفراء */
+        font-size: 60px !important; /* صغرنا حجمها شوية عشان تناسب عرض الموبايل */
+        opacity: 0.2; /* وضحناها شوية زيادة */
     }
+
+    /* 3. تظبيط مكان الصندوق الزجاجي عشان ميتداخلش مع الزراير */
     .glass-box {
-        width: 85% !important; /* يخلي الكلام العربي يلف في السطر وميخرجش بره الشاشة */
-        font-size: 18px !important;
-        padding: 10px 20px !important;
-        text-align: center;
-    }
-    #myButton {
-        width: 80% !important; /* يخلي الزراير تحت بعض بشكل شيك في الموبايل */
-        min-width: unset !important;
+        top: 20px !important;
+        width: 75% !important;
+        left: 5% !important;
+        transform: none !important;
+        font-size: 16px !important;
     }
 }
     </style>
