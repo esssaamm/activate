@@ -163,7 +163,23 @@
 }
 
 
-
+/* الأكواد دي بتشتغل بس لما تفتح من موبايل */
+@media (max-width: 600px) {
+    h1 {
+        font-size: 80px !important; /* تصغير الكلمة اللي في الخلفية عشان متبوظش الأبعاد */
+        top: 40% !important;
+    }
+    .glass-box {
+        width: 85% !important; /* يخلي الكلام العربي يلف في السطر وميخرجش بره الشاشة */
+        font-size: 18px !important;
+        padding: 10px 20px !important;
+        text-align: center;
+    }
+    #myButton {
+        width: 80% !important; /* يخلي الزراير تحت بعض بشكل شيك في الموبايل */
+        min-width: unset !important;
+    }
+}
     </style>
 </head>
 <body>
@@ -180,7 +196,7 @@
     <a href="https://docs.google.com/spreadsheets/d/1VvkJmA-cWBu9qcedGcbG1jefzf3btjVA3uIBiRk6hMg/edit?usp=sharing" 
    target="_blank" 
    class="db-btn">
-   📊
+    📊 
 </a>
 
     <div id="mySidebar" class="sidebar">
