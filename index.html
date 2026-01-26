@@ -1,70 +1,245 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CODE</title>
+    <title>essaam BLS group Alert</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: #f4f7f9; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .card { background: white; padding: 35px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center; max-width: 450px; width: 90%; border-top: 6px solid #e91e63; }
-        h2 { color: #e91e63; margin-bottom: 10px; }
-        p { color: #5f6368; font-size: 15px; margin-bottom: 25px; line-height: 1.6; }
-        .hwid-box { background: #fce4ec; border: 2px dashed #e91e63; padding: 20px; font-family: monospace; font-size: 1.3rem; color: #880e4f; font-weight: bold; border-radius: 12px; margin-bottom: 25px; cursor: pointer; word-break: break-all; }
-        button { background-color: #e91e63; color: white; border: none; padding: 15px 30px; border-radius: 8px; cursor: pointer; font-size: 18px; font-weight: bold; width: 100%; transition: 0.3s; }
-        button:hover { background-color: #c2185b; transform: translateY(-2px); }
-        .info-text { margin-top: 15px; font-size: 12px; color: #f44336; font-weight: bold; }
+        /* CSS المدمج */
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            background: linear-gradient(135deg, #f0f4e6, #fdfddc); /* خلفية متدرجة حلوة */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: Roboto, sans-serif;
+        }
+
+        /* العنوان الكبير في الخلفية */
+        h1 {
+            position: absolute;
+            top: 30%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 200px;           /* حجم كبير */
+            font-weight: bold;
+            color: rgba(0, 0, 0, 0.1);  /* لون شبه شفاف */
+            z-index: 0;                 /* في الخلفية */
+            white-space: nowrap;        /* ما يكسرش السطر */
+            pointer-events: none;       /* ما يتأثرش بالكليكات */
+        }
+
+        .glass-box {
+            position: absolute;
+            top: 30px;
+            padding: 15px 40px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            backdrop-filter: blur(8px);       /* تأثير الإزاز */
+            -webkit-backdrop-filter: blur(8px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            color: #000000;
+            font-size: 22px;
+            font-weight: bold;
+            z-index: 2; 
+        }
+
+        #myButton {
+            background-color: #eabf00; /* أصفر ذهبي */
+            color: white;
+            z-index: 1;
+            padding: 15px 40px; /* حجم الزرار */
+            font-size: 18px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            display: block;
+            margin: 20px auto 0 auto; 
+            text-align: center;
+            min-width: 200px;
+        }
+
+        #myButton:hover {
+            background-color: #b49301;
+            color: white;
+        }
+
+        /* الزرار فوق يمين */
+        .toggle-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #e9e1be;
+            color: rgb(0, 0, 0);
+            border: none;
+            padding: 10px 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            z-index: 1001;
+        }
+
+        .toggle-btn:hover {
+            background: #cbbd82;
+        }
+
+        /* الشريط الجانبي */
+        .sidebar {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            top: 0;
+            right: 0;
+            background: rgba(231, 225, 170, 0.85);
+            backdrop-filter: blur(8px);
+            color: rgb(0, 0, 0);
+            overflow-x: hidden;
+            transition: 0.4s;
+            padding-top: 60px;
+            z-index: 1000;
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar ul li {
+            padding: 12px 20px;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            font-size: 18px;
+        }
+
+        .sidebar ul li:hover {
+            background: rgba(255,255,255,0.3);
+            cursor: pointer;
+        }
+
+        /* زرار يقفل الشريط */
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            font-size: 22px;
+            background: none;
+            border: none;
+            color: #000;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
 
-<div class="card">
-    <h2>essaam0_0</h2>
-    <p>ده الكود بتاعك</p>
+    <h1>essaam0_0</h1>
+    <div class="glass-box">۞ حسبي الله لا إله إلا هو عليه توكلت وهو رب العرش العظيم ۞</div>
     
-    <div class="hwid-box" id="hwid_display" onclick="copyCode()">جاري الحساب...</div>
-    
-    <button onclick="copyCode()">نسخ كود الجهاز</button>
-    <p class="info-text">ملاحظة: افتح الرابط من المتصفح الذي ستستخدم فيه السكريبتات.</p>
-</div>
+    <button id="myButton" onclick="sendTest()">System_ON</button>
+    <button id="myButton" onclick="sendMessage1()">ALEX</button>
+    <button id="myButton" onclick="sendMessage2()">CAIRO</button>
 
-<script>
-    function getHWID() {
-        const canvas = document.createElement('canvas');
-        const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
-        
-        // جلب جملة كارت الشاشة كاملة بدون أي تعديل
-        const debugInfo = gl ? gl.getExtension('WEBGL_debug_renderer_info') : null;
-        const renderer = debugInfo ? gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) : "N/A";
+    <button class="toggle-btn" onclick="openSidebar()"> 👥 </button>
 
-        // جلب قدرة معالجة الأنسجة (ثابت هاردوير)
-        const maxTextureSize = gl ? gl.getParameter(gl.MAX_TEXTURE_SIZE) : 0;
+    <div id="mySidebar" class="sidebar">
+        <button class="close-btn" onclick="closeSidebar()">✖</button>
+        <h2 id="teamTitle"> Team Members </h2>
+        <ul>
+            <li>essaam0_0</li>
+            <li>Seif Qatar</li>
+            <li>Sonny</li>
+            <li>SAQA</li>
+            <li>MOHANAD SIAM</li>
+            <li>EL LWAA</li>
+            <li>MADA</li>
+            <li>MARMOOSH</li>
+            <li>SHIFFOO</li>
+        </ul>
+    </div>
 
-        // تجميع الـ Stack الخماسي (الجملة الكاملة + الأنوية + اللمس + الألوان + الأنسجة)
-        const stack = [
-            renderer,                        // جملة كارت الشاشة الكاملة
-            navigator.hardwareConcurrency,   // عدد الأنوية
-            navigator.maxTouchPoints || 0,    // دعم اللمس
-            screen.colorDepth,               // عمق الألوان
-            maxTextureSize                   // قدرة الأنسجة
-        ].join('###');
-
-        // المحرك الرياضي (Hashing)
-        let hash = 0;
-        for (let i = 0; i < stack.length; i++) {
-            hash = ((hash << 5) - hash) + stack.charCodeAt(i);
-            hash |= 0;
+    <script>
+        // دالة إرسال تنبيه النظام المفتوح
+        function sendTest() {
+            const confirmSend = confirm("متأكد ان السيستم فتح ؟");
+            if (!confirmSend) return;
+            const chatId = "-1002842084797"; 
+            const token = "7550784016:AAGP7kKkwiguzut9iN1f2QsimkLJnNRCZW0"; 
+            const message = " 🇪🇸 System ON ✅";
+            const delay = 4500;
+            
+            for (let i = 0; i < 10; i++) { 
+                setTimeout(() => {
+                    const url = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}`;
+                    fetch(url)
+                        .then(response => response.json())
+                        .then(data => console.log("Done ✅", data))
+                        .catch(error => console.error("Error ❌", error));
+                }, i * delay);
+            }
         }
-        return Math.abs(hash).toString(16).toUpperCase();
-    }
 
-    const finalID = getHWID();
-    document.getElementById('hwid_display').innerText = finalID;
+        // دالة الإسكندرية
+        function sendMessage1() {
+            const confirmSend = confirm(" متأكد ان السيستم هيفتح  ALEX ");
+            if (!confirmSend) return;
 
-    function copyCode() {
-        navigator.clipboard.writeText(finalID).then(() => {
-            alert("انت نسخت الكود " + finalID );
-        });
-    }
-</script>
+            const chatId = "-1002842084797"; 
+            const token = "7550784016:AAGP7kKkwiguzut9iN1f2QsimkLJnNRCZW0"; 
+            const message = "ALEX ✅";
+            const delay = 1500;
+            
+            for (let i = 0; i < 2; i++) { 
+                setTimeout(() => {
+                    const url = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}`;
+                    fetch(url)
+                        .then(response => response.json())
+                        .then(data => console.log("Done ✅", data))
+                        .catch(error => console.error("Error ❌", error));
+                }, i * delay);
+            }
+        }
+
+        // دالة القاهرة
+        function sendMessage2() {
+            const confirmSend = confirm(" متأكد ان السيستم هيفتح  CAIRO ");
+            if (!confirmSend) return;
+            const chatId = "-1002842084797"; 
+            const token = "7550784016:AAGP7kKkwiguzut9iN1f2QsimkLJnNRCZW0"; 
+            const message = "CAIRO ✅";
+            const delay = 1500;
+            
+            for (let i = 0; i < 2; i++) { 
+                setTimeout(() => {
+                    const url = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}`;
+                    fetch(url)
+                        .then(response => response.json())
+                        .then(data => console.log("Done ✅", data))
+                        .catch(error => console.error("Error ❌", error));
+                }, i * delay);
+            }
+        }
+
+        // التحكم في الشريط الجانبي
+        function openSidebar() {
+            document.getElementById("mySidebar").style.width = "250px";
+        }
+
+        function closeSidebar() {
+            document.getElementById("mySidebar").style.width = "0";
+        }
+
+        // عد أعضاء الفريق تلقائياً عند التشغيل
+        window.onload = function() {
+            const count = document.querySelectorAll("#mySidebar ul li").length;
+            const title = document.getElementById("teamTitle");
+            title.textContent = `Team Members (${count})`;
+        };
+    </script>
 </body>
 </html>
